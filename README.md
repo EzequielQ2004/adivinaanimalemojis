@@ -55,7 +55,7 @@ Los animales tienen diferentes niveles de dificultad (1-3 estrellas) y se desblo
 
 1. **Clona el repositorio**:
    ```bash
-   git clone https://github.com/TU_USUARIO/adivinaanimalemojis.git
+   https://github.com/EzequielQ2004/adivinaanimalemojis.git
    ```
 
 2. **Abre el archivo**:
@@ -103,11 +103,11 @@ Este proyecto está bajo la licencia MIT. Ver el archivo [LICENSE](LICENSE) para
 
 ## 👨‍💻 Autor
 
-Creado con ❤️ por [Tu Nombre]
+Creado con ❤️ por Ezequiel Quiroz.
 
 ## 🐛 Reporte de bugs
 
-Si encuentras algún bug, por favor abre un [issue](https://github.com/TU_USUARIO/adivinaanimalemojis/issues).
+Si encuentras algún bug, por favor abre un [issue](https://github.com/EzequielQ2004/adivinaanimalemojis/issues).
 
 ## ⭐ Si te gusta el proyecto, no olvides dejar una estrella!
 
