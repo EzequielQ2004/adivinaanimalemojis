@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adivina el Animal - Emojis</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            width: 100%;
+            padding: 40px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 25px;
+                border-radius: 15px;
+                max-width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 15px;
+                border-radius: 10px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            }
+        }
+
+        h1 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.5em;
+            }
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+
+        @media (max-width: 768px) {
+            .subtitle {
+                font-size: 0.95em;
+                margin-bottom: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .subtitle {
+                font-size: 0.85em;
+                margin-bottom: 15px;
+            }
+        }
+
+        .score-board {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 30px;
+            background: #f8f9ff;
+            padding: 20px;
+            border-radius: 15px;
+        }
+
+        @media (max-width: 768px) {
+            .score-board {
+                padding: 15px;
+                margin-bottom: 20px;
+                gap: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .score-board {
+                padding: 12px;
+                margin-bottom: 15px;
+                gap: 8px;
+            }
+        }
+
+        .score-item {
+            text-align: center;
+        }
+
+        .score-label {
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 5px;
+        }
+
+        .score-value {
+            color: #667eea;
+            font-size: 1.8em;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .score-label {
+                font-size: 0.8em;
+                margin-bottom: 3px;
+            }
+
+            .score-value {
+                font-size: 1.4em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .score-label {
+                font-size: 0.7em;
+                margin-bottom: 2px;
+            }
+
+            .score-value {
+                font-size: 1.1em;
+            }
+        }
+
+        .emoji-display {
+            text-align: center;
+            font-size: 5em;
+            margin: 30px 0;
+            min-height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .emoji-display {
+                font-size: 3.5em;
+                margin: 20px 0;
+                min-height: 80px;
+                gap: 8px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .emoji-display {
+                font-size: 2.5em;
+                margin: 15px 0;
+                min-height: 60px;
+                gap: 5px;
+            }
+        }
+
+        .word-display {
+            text-align: center;
+            font-size: 2.5em;
+            letter-spacing: 10px;
+            margin: 30px 0;
+            font-weight: bold;
+            color: #333;
+            min-height: 60px;
+            font-family: 'Courier New', monospace;
+        }
+
+        @media (max-width: 768px) {
+            .word-display {
+                font-size: 1.8em;
+                letter-spacing: 6px;
+                margin: 20px 0;
+                min-height: 50px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .word-display {
+                font-size: 1.4em;
+                letter-spacing: 4px;
+                margin: 15px 0;
+                min-height: 45px;
+            }
+        }
+
+        .letter {
+            display: inline-block;
+            min-width: 30px;
+        }
+
+        .revealed {
+            color: #667eea;
+        }
+
+        .input-section {
+            margin: 30px 0;
+        }
+
+        @media (max-width: 768px) {
+            .input-section {
+                margin: 20px 0;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .input-section {
+                margin: 15px 0;
+            }
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.2em;
+            border: 3px solid #e0e0e0;
+            border-radius: 10px;
+            text-align: center;
+            transition: all 0.3s ease;
+            text-transform: lowercase;
+        }
+
+        @media (max-width: 768px) {
+            input[type="text"] {
+                padding: 12px;
+                font-size: 1em;
+                border-radius: 8px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            input[type="text"] {
+                padding: 10px;
+                font-size: 0.95em;
+                border-radius: 6px;
+            }
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        @media (max-width: 768px) {
+            .buttons {
+                gap: 10px;
+                margin-top: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .buttons {
+                gap: 8px;
+                margin-top: 12px;
+                flex-direction: column;
+            }
+        }
+
+        button {
+            flex: 1;
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 10px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            min-width: 140px;
+        }
+
+        @media (max-width: 768px) {
+            button {
+                padding: 12px 20px;
+                font-size: 0.95em;
+                border-radius: 8px;
+                min-width: 120px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            button {
+                padding: 10px 15px;
+                font-size: 0.9em;
+                border-radius: 6px;
+                min-width: 0;
+                width: 100%;
+            }
+        }
+
+        button:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-hint {
+            background: #f39c12;
+        }
+
+        .btn-hint:hover:not(:disabled) {
+            background: #e67e22;
+            box-shadow: 0 5px 15px rgba(243, 156, 18, 0.4);
+        }
+
+        .btn-skip {
+            background: #e74c3c;
+        }
+
+        .btn-skip:hover {
+            background: #c0392b;
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4);
+        }
+
+        .message {
+            text-align: center;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-size: 1.1em;
+            font-weight: 500;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @media (max-width: 768px) {
+            .message {
+                padding: 12px;
+                margin: 15px 0;
+                font-size: 0.95em;
+                border-radius: 8px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .message {
+                padding: 10px;
+                margin: 10px 0;
+                font-size: 0.85em;
+                border-radius: 6px;
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 2px solid #c3e6cb;
+        }
+
+        .message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 2px solid #f5c6cb;
+        }
+
+        .message.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 2px solid #bee5eb;
+        }
+
+        .hint-count {
+            text-align: center;
+            color: #666;
+            margin-top: 10px;
+            font-size: 0.9em;
+        }
+
+        @media (max-width: 768px) {
+            .hint-count {
+                font-size: 0.8em;
+                margin-top: 8px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hint-count {
+                font-size: 0.75em;
+                margin-top: 6px;
+            }
+        }
+
+        .game-over {
+            text-align: center;
+            padding: 30px;
+            background: #f8f9ff;
+            border-radius: 15px;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .game-over {
+                padding: 20px;
+                border-radius: 12px;
+                margin-top: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .game-over {
+                padding: 15px;
+                border-radius: 10px;
+                margin-top: 12px;
+            }
+        }
+
+        .game-over h2 {
+            color: #667eea;
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .game-over h2 {
+                font-size: 1.5em;
+                margin-bottom: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .game-over h2 {
+                font-size: 1.2em;
+                margin-bottom: 12px;
+            }
+        }
+
+        .final-stats {
+            margin: 20px 0;
+            font-size: 1.2em;
+            color: #666;
+            line-height: 1.8;
+        }
+
+        @media (max-width: 768px) {
+            .final-stats {
+                margin: 15px 0;
+                font-size: 1em;
+                line-height: 1.6;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .final-stats {
+                margin: 12px 0;
+                font-size: 0.9em;
+                line-height: 1.5;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .menu-screen {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        @media (max-width: 768px) {
+            .menu-screen {
+                padding: 25px 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .menu-screen {
+                padding: 15px 10px;
+            }
+        }
+
+        .menu-screen h2 {
+            color: #667eea;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .menu-screen h2 {
+                font-size: 1.8em;
+                margin-bottom: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .menu-screen h2 {
+                font-size: 1.5em;
+                margin-bottom: 12px;
+            }
+        }
+
+        .menu-screen p {
+            color: #666;
+            font-size: 1.2em;
+            line-height: 1.8;
+            margin-bottom: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .menu-screen p {
+                font-size: 1em;
+                line-height: 1.6;
+                margin-bottom: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .menu-screen p {
+                font-size: 0.9em;
+                line-height: 1.5;
+                margin-bottom: 15px;
+            }
+        }
+
+        .menu-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-width: 300px;
+            margin: 0 auto;
+        }
+
+        .menu-buttons button {
+            width: 100%;
+        }
+
+        .btn-exit {
+            background: #95a5a6;
+        }
+
+        .btn-exit:hover {
+            background: #7f8c8d;
+            box-shadow: 0 5px 15px rgba(149, 165, 166, 0.4);
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .top-bar h1 {
+            margin: 0;
+            font-size: 2em;
+        }
+
+        @media (max-width: 768px) {
+            .top-bar {
+                flex-direction: column;
+                gap: 10px;
+                margin-bottom: 15px;
+            }
+
+            .top-bar h1 {
+                font-size: 1.5em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .top-bar {
+                gap: 8px;
+                margin-bottom: 12px;
+            }
+
+            .top-bar h1 {
+                font-size: 1.2em;
+            }
+        }
+
+        .btn-new-game {
+            background: #27ae60;
+            padding: 10px 20px;
+            font-size: 0.9em;
+        }
+
+        @media (max-width: 768px) {
+            .btn-new-game {
+                padding: 8px 15px;
+                font-size: 0.85em;
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .btn-new-game {
+                padding: 7px 12px;
+                font-size: 0.8em;
+                width: 100%;
+            }
+        }
+
+        .btn-new-game:hover {
+            background: #229954;
+            box-shadow: 0 5px 15px rgba(39, 174, 96, 0.4);
+        }
+
+        .game-instructions {
+            background: #f0f4ff;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #667eea;
+        }
+
+        @media (max-width: 768px) {
+            .game-instructions {
+                padding: 15px;
+                margin: 15px 0;
+                border-left: 3px solid #667eea;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .game-instructions {
+                padding: 12px;
+                margin: 12px 0;
+                border-left: 2px solid #667eea;
+            }
+        }
+
+        .game-instructions h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .game-instructions h3 {
+                font-size: 1em;
+                margin-bottom: 8px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .game-instructions h3 {
+                font-size: 0.95em;
+                margin-bottom: 6px;
+            }
+        }
+
+        .game-instructions ul {
+            text-align: left;
+            color: #666;
+            line-height: 1.8;
+            margin-left: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .game-instructions ul {
+                line-height: 1.6;
+                margin-left: 15px;
+                font-size: 0.95em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .game-instructions ul {
+                line-height: 1.5;
+                margin-left: 12px;
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Menú principal -->
+        <div id="menuScreen" class="menu-screen">
+            <h1>🎯 Adivina el Animal</h1>
+            <p class="subtitle">Descubre el animal usando las pistas de emojis</p>
+            
+            <div class="game-instructions">
+                <h3>📖 ¿Cómo jugar?</h3>
+                <ul>
+                    <li>Observa los 3 emojis que te muestran pistas del animal</li>
+                    <li>Escribe el nombre del animal en el campo de texto</li>
+                    <li>Usa el botón "💡 Pista" para revelar letras (pierdes puntos)</li>
+                    <li>¡Forma rachas para obtener puntos extra!</li>
+                </ul>
+            </div>
+
+            <div class="menu-buttons">
+                <button onclick="startGame()">🎮 Iniciar Juego</button>
+                <button onclick="exitGame()" class="btn-exit">🚪 Salir</button>
+            </div>
+        </div>
+
+        <!-- Pantalla de juego -->
+        <div id="gameScreen" class="hidden">
+            <div class="top-bar">
+                <h1>🎯 Adivina el Animal</h1>
+                <button onclick="confirmNewGame()" class="btn-new-game">🔄 Nueva Partida</button>
+            </div>
+            <p class="subtitle">Descubre el animal usando las pistas de emojis</p>
+
+            <div class="score-board">
+                <div class="score-item">
+                    <div class="score-label">Puntos</div>
+                    <div class="score-value" id="scoreDisplay">0</div>
+                </div>
+                <div class="score-item">
+                    <div class="score-label">Nivel</div>
+                    <div class="score-value" id="levelDisplay">1</div>
+                </div>
+                <div class="score-item">
+                    <div class="score-label">Racha</div>
+                    <div class="score-value" id="streakDisplay">0</div>
+                </div>
+            </div>
+
+            <div id="gameArea">
+                <div class="emoji-display" id="emojiDisplay"></div>
+                
+                <div class="word-display" id="wordDisplay"></div>
+
+                <div class="input-section">
+                    <input 
+                        type="text" 
+                        id="guessInput" 
+                        placeholder="Escribe el nombre del animal..."
+                        autocomplete="off"
+                        onkeypress="handleKeyPress(event)"
+                    >
+                    
+                    <div class="buttons">
+                        <button onclick="checkGuess()">✓ Adivinar</button>
+                        <button onclick="getHint()" class="btn-hint" id="hintBtn">💡 Pista</button>
+                        <button onclick="skipAnimal()" class="btn-skip">⏭ Saltar</button>
+                    </div>
+
+                    <div class="hint-count" id="hintCount"></div>
+                </div>
+
+                <div id="message"></div>
+            </div>
+
+            <div style="text-align: center; margin-top: 30px;">
+                <button onclick="backToMenu()" class="btn-exit">🏠 Volver al Menú</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Base de datos de animales
+        const animals = [
+            { name: "perro", emojis: ["🐕", "🦴", "🏠"], difficulty: 1 },
+            { name: "gato", emojis: ["🐱", "🐾", "🥛"], difficulty: 1 },
+            { name: "elefante", emojis: ["🐘", "🌳", "💧"], difficulty: 1 },
+            { name: "jirafa", emojis: ["🦒", "🌳", "👔"], difficulty: 2 },
+            { name: "leon", emojis: ["🦁", "👑", "🌅"], difficulty: 1 },
+            { name: "tigre", emojis: ["🐯", "🌴", "🥩"], difficulty: 2 },
+            { name: "pinguino", emojis: ["🐧", "❄️", "🐟"], difficulty: 2 },
+            { name: "ballena", emojis: ["🐋", "🌊", "💙"], difficulty: 2 },
+            { name: "delfin", emojis: ["🐬", "🌊", "😊"], difficulty: 2 },
+            { name: "oso", emojis: ["🐻", "🍯", "🌲"], difficulty: 1 },
+            { name: "panda", emojis: ["🐼", "🎋", "⚪"], difficulty: 2 },
+            { name: "koala", emojis: ["🐨", "🌿", "😴"], difficulty: 2 },
+            { name: "mono", emojis: ["🐵", "🍌", "🌴"], difficulty: 2 },
+            { name: "conejo", emojis: ["🐰", "🥕", "⚡"], difficulty: 1 },
+            { name: "zorro", emojis: ["🦊", "🌲", "🎭"], difficulty: 2 },
+            { name: "lobo", emojis: ["🐺", "🌙", "🏔️"], difficulty: 2 },
+            { name: "caballo", emojis: ["🐴", "🌾", "🏇"], difficulty: 2 },
+            { name: "vaca", emojis: ["🐮", "🌱", "🥛"], difficulty: 1 },
+            { name: "cerdo", emojis: ["🐷", "🌾", "💗"], difficulty: 1 },
+            { name: "oveja", emojis: ["🐑", "☁️", "🧶"], difficulty: 2 },
+            { name: "pollo", emojis: ["🐔", "🥚", "🌅"], difficulty: 1 },
+            { name: "pato", emojis: ["🦆", "💧", "🍞"], difficulty: 1 },
+            { name: "aguila", emojis: ["🦅", "⛰️", "👁️"], difficulty: 2 },
+            { name: "buho", emojis: ["🦉", "🌙", "📚"], difficulty: 2 },
+            { name: "pez", emojis: ["🐟", "💧", "🪸"], difficulty: 1 },
+            { name: "tiburon", emojis: ["🦈", "🌊", "🦷"], difficulty: 2 },
+            { name: "pulpo", emojis: ["🐙", "🌊", "8️⃣"], difficulty: 2 },
+            { name: "tortuga", emojis: ["🐢", "🐚", "🏖️"], difficulty: 2 },
+            { name: "serpiente", emojis: ["🐍", "🌿", "💚"], difficulty: 2 },
+            { name: "cocodrilo", emojis: ["🐊", "💧", "🦷"], difficulty: 3 },
+            { name: "rana", emojis: ["🐸", "💧", "🪷"], difficulty: 2 },
+            { name: "mariposa", emojis: ["🦋", "🌺", "✨"], difficulty: 2 },
+            { name: "abeja", emojis: ["🐝", "🍯", "🌻"], difficulty: 2 },
+            { name: "hormiga", emojis: ["🐜", "🍂", "💪"], difficulty: 2 },
+            { name: "arana", emojis: ["🕷️", "🕸️", "🌙"], difficulty: 2 },
+            { name: "caracol", emojis: ["🐌", "🐚", "🌧️"], difficulty: 2 },
+            { name: "cangrejo", emojis: ["🦀", "🏖️", "♋"], difficulty: 2 },
+            { name: "camello", emojis: ["🐪", "🏜️", "💧"], difficulty: 2 },
+            { name: "canguro", emojis: ["🦘", "🏀", "🇦🇺"], difficulty: 2 },
+            { name: "rinoceronte", emojis: ["🦏", "🌍", "💪"], difficulty: 3 },
+            { name: "hipopotamo", emojis: ["🦛", "💧", "😮"], difficulty: 3 },
+            { name: "cebra", emojis: ["🦓", "⬛", "⬜"], difficulty: 2 },
+            { name: "flamenco", emojis: ["🦩", "💗", "🦵"], difficulty: 3 },
+            { name: "murcielago", emojis: ["🦇", "🌙", "🦇"], difficulty: 3 }
+        ];
+
+        let currentAnimal = null;
+        let revealedLetters = [];
+        let score = 0;
+        let level = 1;
+        let streak = 0;
+        let hintsUsed = 0;
+        let usedAnimals = [];
+        let gameActive = false;
+
+        function startGame() {
+            document.getElementById('menuScreen').classList.add('hidden');
+            document.getElementById('gameScreen').classList.remove('hidden');
+            gameActive = true;
+            resetGame();
+            startNewRound();
+        }
+
+        function resetGame() {
+            score = 0;
+            level = 1;
+            streak = 0;
+            usedAnimals = [];
+            updateScoreboard();
+        }
+
+        function confirmNewGame() {
+            if (confirm('¿Estás seguro de que quieres iniciar una nueva partida? Se perderá tu progreso actual.')) {
+                resetGame();
+                startNewRound();
+                showMessage('🔄 Nueva partida iniciada', 'info');
+            }
+        }
+
+        function backToMenu() {
+            if (confirm('¿Quieres volver al menú? Se perderá tu progreso actual.')) {
+                document.getElementById('gameScreen').classList.add('hidden');
+                document.getElementById('menuScreen').classList.remove('hidden');
+                gameActive = false;
+            }
+        }
+
+        function exitGame() {
+            if (confirm('¿Estás seguro de que quieres salir del juego?')) {
+                window.close();
+                // Si window.close() no funciona (algunos navegadores lo bloquean)
+                if (!window.closed) {
+                    alert('Gracias por jugar. Puedes cerrar esta pestaña cuando quieras.');
+                }
+            }
+        }
+
+        function normalizeString(str) {
+            return str.toLowerCase()
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .trim();
+        }
+
+        function getRandomAnimal() {
+            const availableAnimals = animals.filter(a => !usedAnimals.includes(a.name));
+            
+            if (availableAnimals.length === 0) {
+                showGameOver();
+                return null;
+            }
+
+            const maxDifficulty = Math.min(3, Math.floor(level / 3) + 1);
+            const suitableAnimals = availableAnimals.filter(a => a.difficulty <= maxDifficulty);
+            
+            const pool = suitableAnimals.length > 0 ? suitableAnimals : availableAnimals;
+            const randomIndex = Math.floor(Math.random() * pool.length);
+            return pool[randomIndex];
+        }
+
+        function startNewRound() {
+            currentAnimal = getRandomAnimal();
+            if (!currentAnimal) return;
+
+            usedAnimals.push(currentAnimal.name);
+            revealedLetters = new Array(currentAnimal.name.length).fill(false);
+            hintsUsed = 0;
+
+            document.getElementById('emojiDisplay').textContent = currentAnimal.emojis.join(' ');
+            updateWordDisplay();
+            document.getElementById('guessInput').value = '';
+            document.getElementById('message').innerHTML = '';
+            document.getElementById('hintBtn').disabled = false;
+            updateHintCount();
+        }
+
+        function updateWordDisplay() {
+            const display = currentAnimal.name.split('').map((letter, index) => {
+                if (revealedLetters[index]) {
+                    return `<span class="letter revealed">${letter.toUpperCase()}</span>`;
+                } else {
+                    return `<span class="letter">_</span>`;
+                }
+            }).join('');
+            
+            document.getElementById('wordDisplay').innerHTML = display;
+        }
+
+        function updateHintCount() {
+            const remaining = currentAnimal.name.length - revealedLetters.filter(r => r).length;
+            document.getElementById('hintCount').textContent = 
+                `Pistas usadas: ${hintsUsed} | Letras por revelar: ${remaining}`;
+        }
+
+        function getHint() {
+            const unrevealedIndices = revealedLetters
+                .map((revealed, index) => revealed ? -1 : index)
+                .filter(index => index !== -1);
+
+            if (unrevealedIndices.length === 0) {
+                showMessage('¡Ya se han revelado todas las letras!', 'info');
+                return;
+            }
+
+            const randomIndex = unrevealedIndices[Math.floor(Math.random() * unrevealedIndices.length)];
+            revealedLetters[randomIndex] = true;
+            hintsUsed++;
+            
+            updateWordDisplay();
+            updateHintCount();
+            showMessage(`💡 Letra revelada: ${currentAnimal.name[randomIndex].toUpperCase()}`, 'info');
+
+            if (unrevealedIndices.length === 1) {
+                document.getElementById('hintBtn').disabled = true;
+            }
+        }
+
+        function checkGuess() {
+            const guess = normalizeString(document.getElementById('guessInput').value);
+            const correctAnswer = normalizeString(currentAnimal.name);
+
+            if (!guess) {
+                showMessage('¡Escribe algo primero!', 'error');
+                return;
+            }
+
+            if (guess === correctAnswer) {
+                handleCorrectGuess();
+            } else {
+                handleWrongGuess();
+            }
+        }
+
+        function handleCorrectGuess() {
+            const basePoints = 100;
+            const hintPenalty = hintsUsed * 10;
+            const streakBonus = streak * 20;
+            const earnedPoints = Math.max(10, basePoints - hintPenalty + streakBonus);
+
+            score += earnedPoints;
+            streak++;
+            
+            if (streak % 5 === 0) {
+                level++;
+            }
+
+            updateScoreboard();
+            
+            showMessage(`🎉 ¡Correcto! +${earnedPoints} puntos`, 'success');
+            
+            setTimeout(() => {
+                startNewRound();
+            }, 2000);
+        }
+
+        function handleWrongGuess() {
+            streak = 0;
+            updateScoreboard();
+            showMessage(`❌ Incorrecto. Era "${currentAnimal.name}"`, 'error');
+            
+            setTimeout(() => {
+                startNewRound();
+            }, 3000);
+        }
+
+        function skipAnimal() {
+            streak = 0;
+            updateScoreboard();
+            showMessage(`⏭ Saltado. Era "${currentAnimal.name}"`, 'info');
+            
+            setTimeout(() => {
+                startNewRound();
+            }, 2000);
+        }
+
+        function updateScoreboard() {
+            document.getElementById('scoreDisplay').textContent = score;
+            document.getElementById('levelDisplay').textContent = level;
+            document.getElementById('streakDisplay').textContent = streak;
+        }
+
+        function showMessage(text, type) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.className = `message ${type}`;
+            messageDiv.textContent = text;
+            
+            setTimeout(() => {
+                messageDiv.className = 'message hidden';
+            }, 3000);
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                checkGuess();
+            }
+        }
+
+        function showGameOver() {
+            document.getElementById('gameArea').innerHTML = `
+                <div class="game-over">
+                    <h2>🏆 ¡Juego Completado!</h2>
+                    <div class="final-stats">
+                        <p>Has adivinado todos los animales disponibles</p>
+                        <p><strong>Puntuación final:</strong> ${score}</p>
+                        <p><strong>Nivel alcanzado:</strong> ${level}</p>
+                        <p><strong>Animales adivinados:</strong> ${usedAnimals.length}</p>
+                    </div>
+                    <div class="buttons">
+                        <button onclick="confirmNewGame()">🔄 Nueva Partida</button>
+                        <button onclick="backToMenu()" class="btn-exit">🏠 Volver al Menú</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // No iniciar el juego automáticamente
+        // El juego se inicia desde el menú
+    </script>
+</body>
+</html>
