@@ -1,0 +1,18 @@
+\adivinaanimalemojis\.gitignore
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Node (si lo usas en el futuro)
+node_modules/
+package-lock.json
+
+# Otros
+*.log
+.env
